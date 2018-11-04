@@ -2,6 +2,9 @@ import tensorflow as tf, pdb
 
 WEIGHTS_INIT_STDEV = .1
 
+"""
+This defines the transformation NETWORK
+"""
 def net(image):
     conv1 = _conv_layer(image, 32, 9, 1)
     conv2 = _conv_layer(conv1, 64, 3, 2)
