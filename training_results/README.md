@@ -3,9 +3,9 @@
 
 1000 iterations
 <img src = '0_1000.png' height = '246px'>
+<img src = '0_2000.png' height = '246px'>
 
 2000 iterations
-<img src = '0_2000.png' height = '246px'>
 
 3000 iterations
 <img src = '0_3000.png' height = '246px'>
