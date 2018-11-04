@@ -1,5 +1,9 @@
-The training ran for two epochs, with 4000 iterations each.
-* 56 minutes/1000 iterations on a K80 on Google Cloud.
+# Details
+The training ran for:
+* 2 epochs (full runs through the entirety of the dataset)
+* 4000 iterations per epoch
+* 56 minutes for every checkpoint (1000 iterations)
+* on a K80 on Google Cloud.
 
 For checkpoints, see the Google Storage Bucket
 * https://console.cloud.google.com/storage/browser/transformer-results-bucket
