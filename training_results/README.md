@@ -1,4 +1,5 @@
-The training ran for two epochs, with 4000 iterations each. Big dataset!! Took more than 6 hours on a K80 on Google Cloud.
+The training ran for two epochs, with 4000 iterations each.
+* 56 minutes/1000 iterations on a K80 on Google Cloud.
 
 # Epoch 0
 
