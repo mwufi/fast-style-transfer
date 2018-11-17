@@ -1,30 +1,21 @@
 
-## Fast Style Transfer in [TensorFlow](https://github.com/tensorflow/tensorflow)
-
-Add styles from famous paintings to any photo in a fraction of a second! [You can even style videos!](#video-stylization)
-
-<h1 style="color: green">Update: How do I run this on my own computer?</h1>
+# Update: How do I run this on my own computer?
 It's super fun :)
 
 1. First, we need to clone this repository.
 ```
 git clone git@github.com:mwufi/fast-style-transfer.git
 cd fast-style-transfer
-```
-
-2. 
-Let's make a folder called `checkpoints` to store the trained model weights:
-```
 mkdir checkpoints
 ```
 
-3. Grab the checkpoints here, and put them in the folder above.
+2. Grab the checkpoints here, and put them in the folder above.
 * [checkpoint](https://storage.googleapis.com/transformer-results-bucket/training/fast_style_transfer-1/checkpoint)
 * [fns.ckpt.data-00000-of-00001 (19.2 MB)](https://storage.googleapis.com/transformer-results-bucket/training/fast_style_transfer-1/fns.ckpt.data-00000-of-00001)
 * [fns.ckpt.index](https://storage.googleapis.com/transformer-results-bucket/training/fast_style_transfer-1/fns.ckpt.index)
 * [fns.ckpt.meta (157 MB)](https://storage.googleapis.com/transformer-results-bucket/training/fast_style_transfer-1/fns.ckpt.meta)
 
-4. Now you have a *fast style transfer network* and you're ready to take on the world! Read "Implementation Details" below to see how you can train/evaluate on your own.
+3. Now you have a *fast style transfer network* and you're ready to take on the world! Read "Implementation Details" below to see how you can train/evaluate on your own.
 
 ## Implementation Details
 Our implementation uses TensorFlow to train a fast style transfer network. We use roughly the same transformation network as described in Johnson, except that batch normalization is replaced with Ulyanov's instance normalization, and the scaling/offset of the output `tanh` layer is slightly different. We use a loss function close to the one described in Gatys, using VGG19 instead of VGG16 and typically using "shallower" layers than in Johnson's implementation (e.g. we use `relu1_1` rather than `relu1_2`). Empirically, this results in larger scale style features in transformations.
