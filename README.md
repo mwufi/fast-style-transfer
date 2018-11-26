@@ -1,21 +1,53 @@
+## Fast Style Transfer in [TensorFlow](https://github.com/tensorflow/tensorflow)
 
-# Update: How do I run this on my own computer?
-It's super fun :)
+Add styles from famous paintings to any photo in a fraction of a second! [You can even style videos!](#video-stylization)
 
-1. First, we need to clone this repository.
+<p align = 'center'>
+<img src = 'examples/style/udnie.jpg' height = '246px'>
+<img src = 'examples/content/stata.jpg' height = '246px'>
+<a href = 'examples/results/stata_udnie.jpg'><img src = 'examples/results/stata_udnie_header.jpg' width = '627px'></a>
+</p>
+<p align = 'center'>
+It takes 100ms on a 2015 Titan X to style the MIT Stata Center (1024×680) like Udnie, by Francis Picabia.
+</p>
+
+Our implementation is based off of a combination of Gatys' [A Neural Algorithm of Artistic Style](https://arxiv.org/abs/1508.06576), Johnson's [Perceptual Losses for Real-Time Style Transfer and Super-Resolution](http://cs.stanford.edu/people/jcjohns/eccv16/), and Ulyanov's [Instance Normalization](https://arxiv.org/abs/1607.08022). 
+
+# Training a new Fast Neural Style network
+
+Before we begin:
+* make sure you can ssh into your Google Cloud VM, as shown [here]. This just pre-installs Tensorflow (and GPU drivers) for you, so it's easier!
+
+1. first, we need to clone the repository
 ```
 git clone git@github.com:mwufi/fast-style-transfer.git
 cd fast-style-transfer
-mkdir checkpoints
 ```
 
-2. Grab the checkpoints here, and put them in the folder above.
-* [checkpoint](https://storage.googleapis.com/transformer-results-bucket/training/fast_style_transfer-1/checkpoint)
-* [fns.ckpt.data-00000-of-00001 (19.2 MB)](https://storage.googleapis.com/transformer-results-bucket/training/fast_style_transfer-1/fns.ckpt.data-00000-of-00001)
-* [fns.ckpt.index](https://storage.googleapis.com/transformer-results-bucket/training/fast_style_transfer-1/fns.ckpt.index)
-* [fns.ckpt.meta (157 MB)](https://storage.googleapis.com/transformer-results-bucket/training/fast_style_transfer-1/fns.ckpt.meta)
+2. Install the requirements 
 
-3. Now you have a *fast style transfer network* and you're ready to take on the world! Read "Implementation Details" below to see how you can train/evaluate on your own.
+Requirements:
+- TensorFlow (already installed for you if you used Google Cloud VM)
+- Python 2.7.9, Pillow 3.4.2, scipy 0.18.1, numpy 1.11.2 ()
+```
+pip install -r requirements.txt
+```
+- ffmpeg
+I can install `ffmpeg` by running the following in the Python shell.
+```
+import imageio
+imageio.plugins.ffmpeg.download()
+```
+
+3. Download MSCOCO dataset, and also the VGG net: Run `./setup.sh`.
+* This takes an hour! MSCOCO is really big.
+
+4. Change which image you want to mimic - by changing this variable in `run_train.sh`:
+```
+IMG_STYLE=examples/style/wave.jpg (or wherever else your style image is)
+```
+After you're ready, run `./run_train.sh` to train!
+
 
 ## Implementation Details
 Our implementation uses TensorFlow to train a fast style transfer network. We use roughly the same transformation network as described in Johnson, except that batch normalization is replaced with Ulyanov's instance normalization, and the scaling/offset of the output `tanh` layer is slightly different. We use a loss function close to the one described in Gatys, using VGG19 instead of VGG16 and typically using "shallower" layers than in Johnson's implementation (e.g. we use `relu1_1` rather than `relu1_2`). Empirically, this results in larger scale style features in transformations.
@@ -48,31 +80,7 @@ Use `transform_video.py` to transfer style into a video. Run `python transform_v
       --device /gpu:0 \
       --batch-size 4
 
-### Requirements
-You will need the following to run the above:
-- TensorFlow 0.11.0
-- Python 2.7.9, Pillow 3.4.2, scipy 0.18.1, numpy 1.11.2
-- If you want to train (and don't want to wait for 4 months):
-  - A decent GPU
-  - All the required NVIDIA software to run TF on a GPU (cuda, etc)
-- ffmpeg 3.1.3 if you want to stylize video
 
-
-
-## Fast Style Transfer in [TensorFlow](https://github.com/tensorflow/tensorflow)
-
-Add styles from famous paintings to any photo in a fraction of a second! [You can even style videos!](#video-stylization)
-
-<p align = 'center'>
-<img src = 'examples/style/udnie.jpg' height = '246px'>
-<img src = 'examples/content/stata.jpg' height = '246px'>
-<a href = 'examples/results/stata_udnie.jpg'><img src = 'examples/results/stata_udnie_header.jpg' width = '627px'></a>
-</p>
-<p align = 'center'>
-It takes 100ms on a 2015 Titan X to style the MIT Stata Center (1024×680) like Udnie, by Francis Picabia.
-</p>
-
-Our implementation is based off of a combination of Gatys' [A Neural Algorithm of Artistic Style](https://arxiv.org/abs/1508.06576), Johnson's [Perceptual Losses for Real-Time Style Transfer and Super-Resolution](http://cs.stanford.edu/people/jcjohns/eccv16/), and Ulyanov's [Instance Normalization](https://arxiv.org/abs/1607.08022). 
 
 ### License
 Copyright (c) 2016 Logan Engstrom. Contact me for commercial use (or rather any use that is not academic research) (email: engstrom at my university's domain dot edu). Free for research use, as long as proper attribution is given and this copyright notice is retained.
