@@ -1,6 +1,6 @@
 
 # train it for this
-IMG_STYLE=examples/style/rain_princess.jpg
+IMG_STYLE=examples/style/wave.jpg
 
 # training details
 CKPT_DIR=checkpoints
@@ -14,6 +14,6 @@ CUDA_VISIBLE_DEVICES=$GPUS python style.py --style $IMG_STYLE \
 	--checkpoint-dir $CKPT_DIR \
 	--test $IMG_TEST \
 	--test-dir $TEST_DIR \
-	--content-weight 1.5e1 \
+	--content-weight 7.5e-1 \
 	--checkpoint-iterations 1000 \
-	--batch-size 18
+	--batch-size 18 \
