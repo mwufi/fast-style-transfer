@@ -16,4 +16,4 @@ CUDA_VISIBLE_DEVICES=$GPUS python style.py --style $IMG_STYLE \
 	--test-dir $TEST_DIR \
 	--content-weight 7.5e-1 \
 	--checkpoint-iterations 1000 \
-	--batch-size 20
+	--batch-size 18 \

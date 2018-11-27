@@ -13,7 +13,7 @@ DEVICES = 'CUDA_VISIBLE_DEVICES'
 def optimize(content_targets, style_target, content_weight, style_weight,
              tv_weight, vgg_path, epochs=2, print_iterations=1000,
              batch_size=4, save_path='saver/fns.ckpt', slow=False,
-             learning_rate=1e-3, debug=False):
+             learning_rate=1e-3, debug=True):
     if slow:
         batch_size = 1
     mod = len(content_targets) % batch_size
@@ -90,14 +90,14 @@ def optimize(content_targets, style_target, content_weight, style_weight,
         # overall loss
         train_step = tf.train.AdamOptimizer(learning_rate).minimize(loss)
         sess.run(tf.global_variables_initializer())
-        import random
-        uid = random.randint(1, 100)
-        print("UID: %s" % uid)
+        start_time = time.time()
         for epoch in range(epochs):
             num_examples = len(content_targets)
+            if debug:
+                print("There are", num_examples, "examples")
+            
             iterations = 0
             while iterations * batch_size < num_examples:
-                start_time = time.time()
                 curr = iterations * batch_size
                 step = curr + batch_size
                 X_batch = np.zeros(batch_shape, dtype=np.float32)
@@ -115,7 +115,9 @@ def optimize(content_targets, style_target, content_weight, style_weight,
                 end_time = time.time()
                 delta_time = end_time - start_time
                 if debug:
-                    print("UID: %s, batch time: %s" % (uid, delta_time))
+                    examples_per_second = iterations * batch_size / delta_time
+                    ttl = num_examples / examples_per_second / 3600.0 * epochs
+                    print("iteration %s -- elapsed time (s): %s -- estimated time (hours): %s" % (iterations, delta_time, ttl))
                 is_print_iter = int(iterations) % print_iterations == 0
                 if slow:
                     is_print_iter = epoch % print_iterations == 0
