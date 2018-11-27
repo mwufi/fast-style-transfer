@@ -1,4 +1,7 @@
 # Details
+Running `./run_train.sh` gives the following:
+<img src="Screen Shot 2018-11-27 at 1.45.09 AM.png">
+
 The training ran for:
 * 2 epochs (full runs through the entirety of the dataset)
 * 4000 iterations per epoch
