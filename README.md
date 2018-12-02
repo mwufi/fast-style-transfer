@@ -42,11 +42,10 @@ imageio.plugins.ffmpeg.download()
 3. Download MSCOCO dataset, and also the VGG net: Run `./setup.sh`.
 * This takes an hour! MSCOCO is really big.
 
-4. Change which image you want to mimic - by changing this variable in `run_train.sh`:
+4. Training: If you have one GPU, and your image is called `examples/style/wave.jpg`, you can train a network by calling the `run_train.sh` script:
 ```
-IMG_STYLE=examples/style/wave.jpg (or wherever else your style image is)
+GPUS=0 IMG=wave ./run_train.sh
 ```
-After you're ready, run `./run_train.sh` to train!
 
 
 ## Implementation Details
